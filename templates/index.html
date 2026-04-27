@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js" integrity="sha384-H5SrcfygHmAuTDZphMHqBJLc3FhssKjG7w/CeCpFReSfwBWDTKpkzPP8c+cLsK+V" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <form hx-post="/shorten" hx-target="#result" hx-swap="innerHTML">
+        <label for="url_input">Long URL:</label>
+        <input type="url" id="url_input" name="original_url" placeholder="https://example.com" required>
+        <button type="submit">Shorten</button>
+    </form>
+
+    <div id="result"></div>
+
+</body>
+</html>
