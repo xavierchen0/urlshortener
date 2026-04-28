@@ -1,5 +1,9 @@
 # URL Shortener
 
+<img width="1107" height="564" alt="image" src="https://github.com/user-attachments/assets/da765880-1f86-41e7-96c1-f4d7f39a3486" />
+
+<br>
+
 > Short URLs are like a box of chocolates... you never know where they’re gonna
 > redirect.
 
@@ -15,8 +19,7 @@ Use the web app via this [link](https://urlshortener-74dy.onrender.com/).
 2. Short URL should redirect user to the long URL.
 
 For (1), the challenge is creating a one-to-one map between the short URL and
-long URL. With an infinitely many long URLs, I must therefore create infinitely
-many short URLs, but this isn't feasible.
+long URL.
 
 I initially tried to use a random string generator to create the short URL but
 soon realised that given sufficient time, there will be a chance that there will
