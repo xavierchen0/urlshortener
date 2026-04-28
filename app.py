@@ -5,11 +5,22 @@ from sqlalchemy.orm import Session
 from db.models import URL, Base
 from utils.utils import encode_base62
 
+# ####################
+# Setup
+# ####################
+
+# Initialise Flask app
 app = Flask(__name__)
 
+# Initialise Database connection to in-memory sqlite
 engine = create_engine("sqlite:///:memory", echo=True)
 
+# Create all tables in sqlite Database if it does not exist
 Base.metadata.create_all(engine)
+
+# ####################
+# Endpoints
+# ####################
 
 
 @app.route("/")

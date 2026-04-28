@@ -1,3 +1,7 @@
+"""
+Declare SQLAlchemy's Table Objects.
+"""
+
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
