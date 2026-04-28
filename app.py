@@ -53,11 +53,10 @@ def shorten() -> str:
 @app.route("/<short_code>", methods=["GET"])
 def redirect_to_long_url(short_code: str) -> Response:
     with Session(engine) as session:
+        # Query for unique short code in the databse
+        # If it exists, result will contain entry else None
         stmt = select(URL).where(URL.short_code == short_code)
-
         result = session.execute(stmt).scalar_one_or_none()
-
-        print(result)
 
         if not result:
             abort(404)
