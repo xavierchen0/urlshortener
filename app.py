@@ -14,12 +14,14 @@ from utils.utils import encode_base62
 # Initialise Flask app
 app = Flask(__name__)
 
-# Initialise Database connection
+# Initialise database connection
 DB_USERNAME = os.environ.get("DB_USERNAME", None)
 DB_PASSWORD = os.environ.get("DB_PASSWORD", None)
 DB_URL = os.environ.get("DB_URL", None)
 DB_NAME = os.environ.get("DB_NAME", None)
 
+# Only on render.com are these environment variables set
+# For local development, use in-memory sqlite database
 if DB_USERNAME:
     engine = create_engine(
         f"postgresql+psycopg://{DB_USERNAME}:{DB_PASSWORD}@{DB_URL}{DB_NAME}"
@@ -27,7 +29,7 @@ if DB_USERNAME:
 else:
     engine = create_engine("sqlite:///:memory", echo=True)
 
-# Create all tables in sqlite Database if it does not exist
+# Create all tables in database if it does not exist
 Base.metadata.create_all(engine)
 
 # ####################
@@ -46,8 +48,8 @@ def shorten() -> str:
     long_url = request.form["long_url"]
 
     with Session(engine) as session:
-        # Add a new entry to the Database before creating the short URL so that
-        #   we can get the Database row id associated with the new entry
+        # Add a new entry to the database before creating the short URL so that
+        #   we can get the database row id associated with the new entry
         new_entry = URL(long_url=long_url)
 
         session.add(new_entry)
