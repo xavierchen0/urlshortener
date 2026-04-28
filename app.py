@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, Response, abort, redirect, render_template, request
 from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session
@@ -12,8 +14,18 @@ from utils.utils import encode_base62
 # Initialise Flask app
 app = Flask(__name__)
 
-# Initialise Database connection to in-memory sqlite
-engine = create_engine("sqlite:///:memory", echo=True)
+# Initialise Database connection
+DB_USERNAME = os.environ.get("DB_USERNAME", None)
+DB_PASSWORD = os.environ.get("DB_PASSWORD", None)
+DB_URL = os.environ.get("DB_URL", None)
+DB_NAME = os.environ.get("DB_NAME", None)
+
+if DB_USERNAME:
+    engine = create_engine(
+        f"postgresql+psycopg://{DB_USERNAME}:{DB_PASSWORD}@{DB_URL}{DB_NAME}"
+    )
+else:
+    engine = create_engine("sqlite:///:memory", echo=True)
 
 # Create all tables in sqlite Database if it does not exist
 Base.metadata.create_all(engine)
