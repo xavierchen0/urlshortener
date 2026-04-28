@@ -42,8 +42,10 @@ def shorten():
 
         session.commit()
 
-        new_entry.short_url = encode_base62(new_entry.id)
+        short_code = encode_base62(new_entry.id)
+        short_url = request.host_url + short_code
+        new_entry.short_url = short_url
 
         session.commit()
 
-    return long_url
+    return short_url
