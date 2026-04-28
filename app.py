@@ -1,5 +1,5 @@
-from flask import Flask, render_template, request
-from sqlalchemy import create_engine
+from flask import Flask, Response, abort, redirect, render_template, request
+from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session
 
 from db.models import URL, Base
@@ -48,3 +48,17 @@ def shorten() -> str:
         session.commit()
 
     return request.host_url + short_code
+
+
+@app.route("/<short_code>", methods=["GET"])
+def redirect_to_long_url(short_code: str) -> Response:
+    with Session(engine) as session:
+        # Query for unique short code in the databse
+        # If it exists, result will contain entry else None
+        stmt = select(URL).where(URL.short_code == short_code)
+        result = session.execute(stmt).scalar_one_or_none()
+
+        if not result:
+            abort(404)
+
+        return redirect(result.long_url)
