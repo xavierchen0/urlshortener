@@ -24,12 +24,12 @@ Base.metadata.create_all(engine)
 
 
 @app.route("/")
-def home():
+def home() -> str:
     return render_template("index.html")
 
 
 @app.route("/shorten", methods=["POST"])
-def shorten():
+def shorten() -> str:
     # Get the user-provided long URL
     long_url = request.form["long_url"]
 
