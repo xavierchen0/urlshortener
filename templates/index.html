@@ -4,15 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>URL Shortener</title>
+    <!-- install htmx -->
     <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js" integrity="sha384-H5SrcfygHmAuTDZphMHqBJLc3FhssKjG7w/CeCpFReSfwBWDTKpkzPP8c+cLsK+V" crossorigin="anonymous"></script>
+    <!-- install tailwindcss -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- install JetBrains-Mono font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
 
     <style>
+      /* set font style */
       body {
         font-family: 'JetBrains Mono', monospace
+      }
+
+      /* spinner animation */
+      .loader {
+        width: 48px;
+        height: 48px;
+        border: 5px dotted #3B82F6;
+        border-radius: 50%;
+        display: inline-block;
+        position: relative;
+        box-sizing: border-box;
+        animation: rotation 2s linear infinite;
+      }
+
+      @keyframes rotation {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
       }
     </style>
 </head>
@@ -29,7 +54,10 @@
       hx-post="/shorten"
       hx-target="#result"
       hx-swap="innerHTML"
-      class="flex flex-col gap-6 items-center"
+      hx-disabled-elt="find button"
+      hx-indicator="#spinner"
+      hx-on::before-request="document.getElementById('result').innerHTML = ''"
+      class="flex flex-col items-center gap-6"
     >
         <label for="url_input" class="font-bold">Long URL:</label>
         <input
@@ -42,12 +70,16 @@
           class="text-center w-full bg-gray-100 rounded-4xl p-4"
         >
         <button
-          type="submit" 
-          class="font-bold text-white bg-blue-500 p-2 rounded-4xl transition delay-100 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500"
-        >Shorten</button>
-    </form>
+          type="submit"
+          class="font-bold text-white bg-blue-500 p-2 rounded-4xl transition delay-100 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed disbled:pointer-events-none"
+        >Shorten
+        </button>
 
-    <div id="result" class="text-blue-500 text-center mt-6"></div>
+        <div class="h-10 flex items-center justify-center">
+            <span id="spinner" class="loader htmx-indicator"></span>
+            <div id="result" class="text-blue-500 text-center"></div>
+        </div>
+    </form>
   </main>
 
 </body>
