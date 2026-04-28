@@ -5,17 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>URL Shortener</title>
     <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js" integrity="sha384-H5SrcfygHmAuTDZphMHqBJLc3FhssKjG7w/CeCpFReSfwBWDTKpkzPP8c+cLsK+V" crossorigin="anonymous"></script>
-</head>
-<body>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
 
-    <form hx-post="/shorten" hx-target="#result" hx-swap="innerHTML">
-        <label for="url_input">Long URL (Must be a vaid URL e.g. https://example.com):</label>
-        <br>
-        <input type="url" id="url_input" name="long_url" placeholder="https://example.com" title="Must be a valid URL" required>
-        <button type="submit">Shorten</button>
+    <style>
+      body {
+        font-family: 'JetBrains Mono', monospace
+      }
+    </style>
+</head>
+<body class="bg-sky-100 flex flex-col items-center justify-start min-h-screen py-12 px-4">
+
+  <main class="bg-white p-8 rounded-4xl shadow-2xl border border-gray-200 w-full md:max-w-3xl">
+    <h1 class="text-4xl font-bold mb-4 text-center">
+    URL Shortener
+    </h1>
+
+    <p class="text-sm mb-4 text-gray-500 italic text-center">Short URLs are like a box of chocolates... you never know where they’re gonna redirect.</p>
+
+    <form
+      hx-post="/shorten"
+      hx-target="#result"
+      hx-swap="innerHTML"
+      class="flex flex-col gap-6 items-center"
+    >
+        <label for="url_input" class="font-bold">Long URL:</label>
+        <input
+          type="url"
+          id="url_input"
+          name="long_url"
+          placeholder="https://example.com"
+          title="Must be a valid URL"
+          required
+          class="text-center w-full bg-gray-100 rounded-4xl p-4"
+        >
+        <button
+          type="submit" 
+          class="font-bold text-white bg-blue-500 p-2 rounded-4xl transition delay-100 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500"
+        >Shorten</button>
     </form>
 
-    <div id="result"></div>
+    <div id="result" class="text-blue-500 text-center mt-6"></div>
+  </main>
 
 </body>
 </html>
