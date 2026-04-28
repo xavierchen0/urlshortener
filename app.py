@@ -24,12 +24,12 @@ Base.metadata.create_all(engine)
 
 
 @app.route("/")
-def home():
+def home() -> str:
     return render_template("index.html")
 
 
 @app.route("/shorten", methods=["POST"])
-def shorten():
+def shorten() -> str:
     # Get the user-provided long URL
     long_url = request.form["long_url"]
 
@@ -43,9 +43,8 @@ def shorten():
         session.commit()
 
         short_code = encode_base62(new_entry.id)
-        short_url = request.host_url + short_code
-        new_entry.short_url = short_url
+        new_entry.short_code = short_code
 
         session.commit()
 
-    return short_url
+    return request.host_url + short_code
