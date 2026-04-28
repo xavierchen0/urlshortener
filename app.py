@@ -30,9 +30,12 @@ def home():
 
 @app.route("/shorten", methods=["POST"])
 def shorten():
+    # Get the user-provided long URL
     long_url = request.form["long_url"]
 
     with Session(engine) as session:
+        # Add a new entry to the Database before creating the short URL so that
+        #   we can get the Database row id associated with the new entry
         new_entry = URL(long_url=long_url)
 
         session.add(new_entry)
