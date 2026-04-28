@@ -9,8 +9,9 @@
 <body>
 
     <form hx-post="/shorten" hx-target="#result" hx-swap="innerHTML">
-        <label for="url_input">Long URL:</label>
-        <input type="url" id="url_input" name="original_url" placeholder="https://example.com" required>
+        <label for="url_input">Long URL (Must be a vaid URL e.g. https://example.com):</label>
+        <br>
+        <input type="url" id="url_input" name="long_url" placeholder="https://example.com" title="Must be a valid URL" required>
         <button type="submit">Shorten</button>
     </form>
 
