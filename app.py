@@ -47,16 +47,33 @@ def shorten() -> str:
     # Get the user-provided long URL
     long_url = request.form["long_url"]
 
+    # Get the user-provided short URL (optional)
+    custom_url = request.form["alias"]
+
     with Session(engine) as session:
+        if custom_url:
+            # Check that the custom url is unique in the database
+            stmt = select(URL).where(URL.short_code == custom_url)
+            is_exist_custom_url = session.execute(stmt).scalar_one_or_none()
+
+            if is_exist_custom_url:  # there is a custom url in the database
+                return "Error: Custom URL has been used before. Choose something else!"
+
+            new_entry = URL(long_url=long_url, short_code=custom_url)
+        else:
+            new_entry = URL(long_url=long_url)
+
         # Add a new entry to the database before creating the short URL so that
         #   we can get the database row id associated with the new entry
-        new_entry = URL(long_url=long_url)
-
         session.add(new_entry)
 
         session.commit()
 
-        short_code = encode_base62(new_entry.id)
+        if custom_url:
+            short_code = custom_url
+        else:
+            short_code = encode_base62(new_entry.id)
+
         new_entry.short_code = short_code
 
         session.commit()
