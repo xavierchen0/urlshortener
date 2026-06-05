@@ -15,17 +15,12 @@ from utils.utils import encode_base62
 app = Flask(__name__)
 
 # Initialise database connection
-DB_USERNAME = os.environ.get("DB_USERNAME", None)
-DB_PASSWORD = os.environ.get("DB_PASSWORD", None)
 DB_URL = os.environ.get("DB_URL", None)
-DB_NAME = os.environ.get("DB_NAME", None)
 
 # Only on render.com are these environment variables set
 # For local development, use in-memory sqlite database
-if DB_USERNAME:
-    engine = create_engine(
-        f"postgresql+psycopg://{DB_USERNAME}:{DB_PASSWORD}@{DB_URL}{DB_NAME}"
-    )
+if DB_URL:
+    engine = create_engine(f"postgresql+psycopg://{DB_URL}")
 else:
     engine = create_engine("sqlite:///:memory", echo=True)
 
